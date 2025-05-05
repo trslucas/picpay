@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Table(name="users")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor // <-- necessário para o Hibernate
 @EqualsAndHashCode(of="id")

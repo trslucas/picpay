@@ -5,6 +5,7 @@ import com.picpaysimplificado.domain.user.UserType;
 import com.picpaysimplificado.dtos.UserDTO;
 import com.picpaysimplificado.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,6 +15,9 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public void validateTransaction(User sender, BigDecimal amount) throws Exception {
 
@@ -34,7 +38,19 @@ public class UserService {
 
 
     public User createUser(UserDTO data) {
-        User newUser = new User(data);
+
+        String encondedPassword = passwordEncoder.encode(data.password());
+
+
+
+        User newUser = User.builder()
+                .firstName(data.firstName())
+                .lastName(data.lastName())
+                .email(data.email())
+                .password(encondedPassword)
+                .balance(data.balance())
+                .document(data.document())
+                .userType(data.userType()).build();
 
         this.saveUser(newUser);
 
