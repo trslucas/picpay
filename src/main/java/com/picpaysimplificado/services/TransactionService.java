@@ -12,7 +12,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class TransactionService {
@@ -26,6 +28,7 @@ public class TransactionService {
     @Autowired
     private RestTemplate restTemplate;
 
+
     @Autowired
     private NotificationService notificationService;
 
@@ -34,6 +37,7 @@ public class TransactionService {
         User receiver = this.userService.findUserById(transaction.receiverId());
 
         userService.validateTransaction(sender, transaction.value());
+
 
         boolean isAuthorized = this.authorizeTransaction(sender, transaction.value());
         if (!isAuthorized) {
@@ -76,5 +80,11 @@ public class TransactionService {
         }
 
         return false;
+    }
+
+
+    public List<Transaction> listAllTransactionsByUser(UUID senderId) throws Exception {
+
+        return this.repository.findAllBySenderId(senderId);
     }
 }

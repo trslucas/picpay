@@ -2,6 +2,7 @@ package com.picpaysimplificado.controllers;
 
 
 import com.picpaysimplificado.dtos.LoginDTO;
+import com.picpaysimplificado.dtos.TokenDTO;
 import com.picpaysimplificado.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,8 @@ public class AuthController {
     @PostMapping
     public ResponseEntity<?> login(@RequestBody LoginDTO data) {
         try {
-            authService.login(data);
-            return ResponseEntity.ok("Login Bem sucedido");
+            String token = authService.login(data);
+            return ResponseEntity.ok(new TokenDTO(token));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
