@@ -2,6 +2,7 @@ package com.picpaysimplificado.services;
 
 import com.picpaysimplificado.domain.transaction.Transaction;
 import com.picpaysimplificado.domain.user.User;
+import com.picpaysimplificado.dtos.MessageDTO;
 import com.picpaysimplificado.dtos.TransactionDTO;
 import com.picpaysimplificado.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class TransactionService {
 
     @Autowired
     private TransactionRepository repository;
+
+    @Autowired
+    private AwsSnsService awsSnsService;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -62,6 +66,9 @@ public class TransactionService {
         this.notificationService.sendNotification(sender, "Transação realizada com sucesso");
 
         this.notificationService.sendNotification(receiver, "Transação recebida com sucesso");
+
+
+        this.awsSnsService.publish(new MessageDTO(transaction.value(), sender.getFirstName() + " " + sender.getLastName(), receiver.getEmail(), "new-transaction"));
 
         return newTransaction;
     }

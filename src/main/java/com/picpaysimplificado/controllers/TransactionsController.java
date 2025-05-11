@@ -22,26 +22,31 @@ public class TransactionsController {
 
     @PostMapping
     public ResponseEntity<Transaction> createTransaction(@RequestBody TransactionDTO transactionDTO) throws Exception {
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+        if (!authenticatedUser.getId().equals(transactionDTO.senderId())) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
 
         Transaction newTransaction = this.transactionService.createTransaction(transactionDTO);
 
         return new ResponseEntity<>(newTransaction, HttpStatus.OK);
-
-
     }
 
 
-    @GetMapping()
-    public ResponseEntity <List<Transaction>> listAllTransactionsBySenderId() throws Exception {
+    @GetMapping("/{userId}")
+    public ResponseEntity <List<Transaction>> listAllTransactionsBySenderId(@PathVariable UUID userId) throws Exception {
 
         User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UUID senderId = authenticatedUser.getId();
+        UUID authenticatedUserId = authenticatedUser.getId();
 
 
-        List<Transaction> transactions = this.transactionService.listAllTransactionsByUser(senderId);
+        if (!authenticatedUser.getId().equals(userId)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+
+        List<Transaction> transactions = this.transactionService.listAllTransactionsByUser(authenticatedUserId);
 
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }

@@ -1,4 +1,4 @@
-package com.picpaysimplificado.config;
+package com.picpaysimplificado.config.security;
 
 
 import com.picpaysimplificado.domain.user.User;
