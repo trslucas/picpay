@@ -1,6 +1,11 @@
 # 💸 PicPay Simplificado
 
-Uma aplicação backend em Spring Boot que simula transferências entre usuários com validações, notificações via AWS SNS e arquitetura modular.
+Uma aplicação backend em Spring Boot que simula transferências entre usuários com validações, notificações e arquitetura modular.
+Parte dessa aplicação foi feita inspirada no desenvolvimento que a [@Fernanda-Kipper](https://github.com/Fernanda-Kipper) fez
+Então resolvi aprofundar em alguns temas como: 
+- Autenticação via JWT
+- Migração do banco para PostgreSQL
+- Inserção da arquitetura de notificações através dos serviços da AWS 
 
 ---
 
