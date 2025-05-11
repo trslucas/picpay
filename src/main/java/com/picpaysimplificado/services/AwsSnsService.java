@@ -20,6 +20,8 @@ public class AwsSnsService {
         this.snsClient = snsClient;
         this.transactionsTopic = transactionsTopic;
         this.objectMapper = objectMapper;
+
+        System.out.println(snsClient);
     }
 
     public void publish(MessageDTO message) {
